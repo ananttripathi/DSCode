@@ -7,6 +7,7 @@
     <meta name="description" content="Master Data Science, AI, and Machine Learning with curated problems, tutorials, and roadmaps">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="auth-styles.css">
+    <link rel="stylesheet" href="cta-styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -72,6 +73,17 @@
                     <div class="stat">
                         <div class="stat-value">16</div>
                         <div class="stat-label">Topics</div>
+                    </div>
+                </div>
+                
+                <!-- Resume Review CTA -->
+                <div class="cta-banner">
+                    <div class="cta-content">
+                        <h3>📄 Need Your Resume Reviewed?</h3>
+                        <p>Get AI-powered resume analysis, ATS scoring, and job matching</p>
+                        <a href="https://ananttripathi.github.io/Resume-Analyzer-MLOps/" target="_blank" class="cta-btn">
+                            🚀 Review My Resume
+                        </a>
                     </div>
                 </div>
             </div>
@@ -3799,19 +3811,55 @@
                 <div class="footer-info">
                     <h3>📊 DSCode</h3>
                     <p>Master Data Science, AI, and Machine Learning through curated problems and resources.</p>
+                    <button class="donate-btn" id="donateBtn">
+                        ☕ Donate Now
+                    </button>
                 </div>
                 <div class="footer-links">
                     <h4>Quick Links</h4>
-                    <a href="https://github.com" target="_blank">GitHub</a>
+                    <a href="https://github.com/ananttripathi/DSCode" target="_blank">GitHub</a>
                     <a href="#home">Problems</a>
                     <a href="#roadmap">Roadmap</a>
                 </div>
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2025 DSCode. Open source and free forever.</p>
+                <p class="made-by">Made with ❤️ by <strong>Anant Tripathi</strong></p>
             </div>
         </div>
     </footer>
+
+    <!-- Donate Modal -->
+    <div class="modal" id="donateModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content donate-modal">
+            <div class="modal-header">
+                <h2>☕ Support DSCode</h2>
+                <button class="close-btn" onclick="closeDonateModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="donate-content">
+                    <p>If you find DSCode helpful, consider buying me a coffee! Your support helps keep this platform free and updated with new content.</p>
+                    
+                    <div class="upi-section">
+                        <h3>💳 Scan QR Code or Use UPI ID</h3>
+                        <div class="qr-code-container">
+                            <img src="QR_Code.jpeg" alt="UPI QR Code" class="qr-code-image">
+                        </div>
+                        <div class="upi-id-box">
+                            <code id="upiId">ananttripathi1995-3@oksbi</code>
+                            <button class="copy-btn" onclick="copyUPI()">📋 Copy</button>
+                        </div>
+                        <p class="upi-note">Scan the QR code or use the UPI ID to donate any amount</p>
+                    </div>
+                    
+                    <div class="thank-you">
+                        <p>🙏 Thank you for your support!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Login Modal -->
     <div class="modal" id="loginModal">
