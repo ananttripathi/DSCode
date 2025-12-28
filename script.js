@@ -641,3 +641,36 @@ window.dsCode = {
     resetProgress
 };
 
+// ============================================
+// Donate Modal Functions
+// ============================================
+document.getElementById('donateBtn')?.addEventListener('click', () => {
+    document.getElementById('donateModal')?.classList.add('active');
+    document.body.style.overflow = 'hidden';
+});
+
+function closeDonateModal() {
+    document.getElementById('donateModal')?.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function copyUPI() {
+    const upiId = document.getElementById('upiId').textContent;
+    navigator.clipboard.writeText(upiId).then(() => {
+        const btn = event.target;
+        const originalText = btn.textContent;
+        btn.textContent = '✅ Copied!';
+        btn.style.background = '#10b981';
+        
+        setTimeout(() => {
+            btn.textContent = originalText;
+            btn.style.background = '';
+        }, 2000);
+    }).catch(err => {
+        alert('Failed to copy. UPI ID: ' + upiId);
+    });
+}
+
+// Close donate modal on overlay click
+document.querySelector('#donateModal .modal-overlay')?.addEventListener('click', closeDonateModal);
+
