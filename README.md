@@ -1,6 +1,6 @@
 # 📊 DSCode - Master Data Science, AI & ML
 
-A comprehensive learning platform inspired by [NeetCode.io](https://neetcode.io) and [NextLeap.app](https://nextleap.app), designed specifically for mastering Data Science, Artificial Intelligence, and Machine Learning through curated problems and structured learning paths.
+DSCode is a free, comprehensive learning platform for mastering Data Science, AI, and Machine Learning. With 445+ curated problems across 16 topics including Python, ML, Deep Learning, NLP, Computer Vision, Gen AI, RAG, and AI Agents, DSCode helps you build job-ready skills through hands-on practice. Track your progress, practice in dark mode, and prepare for interviews - all completely free.
 
 ## 🌟 Features
 
@@ -181,15 +181,10 @@ Edit `styles.css`:
 
 MIT License - Feel free to use for personal or commercial projects
 
-## 🙏 Acknowledgments
-
-- Inspired by [NeetCode.io](https://neetcode.io)
-- Inspired by [NextLeap.app](https://nextleap.app)
-- Font: Inter by Rasmus Andersson
 
 ## 📞 Support
 
-- 🐛 Issues: [GitHub Issues](https://github.com/yourusername/DSCode/issues)
+- 🐛 Issues: [GitHub Issues](https://github.com/ananttripathi/DSCode/issues)
 - 💡 Feature Requests: Open an issue
 - ⭐ Star this repo if you find it helpful!
 
@@ -197,5 +192,5 @@ MIT License - Feel free to use for personal or commercial projects
 
 **Made with ❤️ for the Data Science Community**
 
-[Live Demo](https://yourusername.github.io/DSCode/) | [Report Bug](https://github.com/yourusername/DSCode/issues) | [Request Feature](https://github.com/yourusername/DSCode/issues)
+[Live Demo](https://ananttripathi.github.io/DSCode/) | [Report Bug](https://github.com/ananttripathi/DSCode/issues) | [Request Feature](https://github.com/ananttripathi/DSCode/issues)
 
