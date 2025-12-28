@@ -1,6 +1,6 @@
 /* Authentication Modal Styles */
 
-.modal {
+#authModal.modal {
     display: none;
     position: fixed;
     z-index: 10000;
@@ -12,18 +12,20 @@
     backdrop-filter: blur(5px);
 }
 
-.modal.active {
+#authModal.modal.active {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.modal-content {
+#authModal .modal-content {
     background: var(--bg-secondary);
     padding: 40px;
     border-radius: 16px;
     max-width: 450px;
     width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     position: relative;
     animation: slideIn 0.3s ease-out;
@@ -40,18 +42,18 @@
     }
 }
 
-.modal-content h2 {
+#authModal .modal-content h2 {
     margin: 0 0 10px 0;
     color: var(--text-primary);
     font-size: 28px;
 }
 
-.modal-content p {
+#authModal .modal-content p {
     color: var(--text-secondary);
     margin-bottom: 30px;
 }
 
-.close-modal {
+#authModal .close-modal {
     position: absolute;
     right: 20px;
     top: 20px;
@@ -61,7 +63,7 @@
     transition: color 0.3s;
 }
 
-.close-modal:hover {
+#authModal .close-modal:hover {
     color: var(--text-primary);
 }
 
@@ -117,6 +119,7 @@
     background: var(--bg-primary);
     color: var(--text-primary);
     transition: border-color 0.3s;
+    box-sizing: border-box;
 }
 
 .auth-input:focus {
