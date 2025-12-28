@@ -1,0 +1,76 @@
+
+/* QR Code Styling */
+.qr-code-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.qr-code-image {
+    max-width: 250px;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Resume Review CTA Banner */
+.cta-banner {
+    margin-top: 40px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    animation: pulse-glow 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+    50% {
+        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.5);
+    }
+}
+
+.cta-content {
+    text-align: center;
+    color: white;
+}
+
+.cta-content h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.cta-content p {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.cta-btn {
+    display: inline-block;
+    padding: 14px 35px;
+    background: white;
+    color: #667eea;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.cta-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    background: #f8f9fa;
+}
+
+/* Dark mode adjustments */
+body.dark-mode .qr-code-image {
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+}
+
