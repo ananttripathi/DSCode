@@ -1,39 +1,69 @@
-// Firebase Configuration
-// Replace these values with your own Firebase config
-const firebaseConfig = {
-    apiKey: "YOUR-API-KEY-HERE",
-    authDomain: "YOUR-PROJECT-ID.firebaseapp.com",
-    projectId: "YOUR-PROJECT-ID",
-    storageBucket: "YOUR-PROJECT-ID.appspot.com",
-    messagingSenderId: "YOUR-MESSAGING-SENDER-ID",
-    appId: "YOUR-APP-ID"
-};
+// Firebase Auth Functions
+// Note: Firebase is initialized in firebase-config.js
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
+// Make functions global so they can be called from onclick handlers
+let auth, db, googleProvider;
 
-// Google Auth Provider
-const googleProvider = new firebase.auth.GoogleAuthProvider();
+// Initialize after DOM loads
+document.addEventListener('DOMContentLoaded', () => {
+    // Check if Firebase is loaded
+    if (typeof firebase === 'undefined') {
+        console.error('❌ Firebase not loaded! Make sure firebase-config.js loads first.');
+        return;
+    }
+    
+    console.log('✅ Firebase Auth module loading...');
+    
+    // Get Firebase instances
+    auth = firebase.auth();
+    db = firebase.firestore();
+    googleProvider = new firebase.auth.GoogleAuthProvider();
 
-// Login Button Handler
-document.getElementById('loginBtn')?.addEventListener('click', () => {
-    showLoginModal();
+    // Login Button Handler
+    const loginBtn = document.getElementById('loginBtn');
+    if (loginBtn) {
+        loginBtn.addEventListener('click', showLoginModal);
+        console.log('✅ Login button handler attached');
+    } else {
+        console.warn('⚠️ Login button not found');
+    }
+
+    // Logout Button Handler
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', signOut);
+    }
+
+    // User Menu Toggle
+    const userAvatar = document.getElementById('userAvatar');
+    if (userAvatar) {
+        userAvatar.addEventListener('click', () => {
+            const dropdown = document.getElementById('userDropdown');
+            if (dropdown) {
+                dropdown.classList.toggle('show');
+            }
+        });
+    }
+
+    // Auth State Observer
+    auth.onAuthStateChanged(handleAuthStateChange);
 });
 
 // Show Login Modal
 function showLoginModal() {
+    console.log('🔐 Opening login modal...');
+    
     const modalHTML = `
         <div id="authModal" class="modal active">
+            <div class="modal-overlay" onclick="closeAuthModal()"></div>
             <div class="modal-content">
                 <span class="close-modal" onclick="closeAuthModal()">&times;</span>
                 <h2>🔐 Sign In to DSCode</h2>
                 <p>Track your progress across devices</p>
                 
                 <div class="auth-tabs">
-                    <button class="auth-tab active" onclick="showTab('signin')">Sign In</button>
-                    <button class="auth-tab" onclick="showTab('signup')">Sign Up</button>
+                    <button class="auth-tab active" onclick="showAuthTab('signin')">Sign In</button>
+                    <button class="auth-tab" onclick="showAuthTab('signup')">Sign Up</button>
                 </div>
                 
                 <div id="signinTab" class="tab-content active">
@@ -60,23 +90,31 @@ function showLoginModal() {
     `;
     
     document.body.insertAdjacentHTML('beforeend', modalHTML);
+    document.body.style.overflow = 'hidden';
 }
 
 // Close Modal
 function closeAuthModal() {
-    document.getElementById('authModal')?.remove();
+    const modal = document.getElementById('authModal');
+    if (modal) {
+        modal.remove();
+    }
+    document.body.style.overflow = '';
 }
 
 // Tab Switching
-function showTab(tab) {
-    document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+function showAuthTab(tab) {
+    const tabs = document.querySelectorAll('.auth-tab');
+    const contents = document.querySelectorAll('.tab-content');
+    
+    tabs.forEach(t => t.classList.remove('active'));
+    contents.forEach(c => c.classList.remove('active'));
     
     if (tab === 'signin') {
-        document.querySelector('.auth-tab:first-child').classList.add('active');
+        tabs[0].classList.add('active');
         document.getElementById('signinTab').classList.add('active');
     } else {
-        document.querySelector('.auth-tab:last-child').classList.add('active');
+        tabs[1].classList.add('active');
         document.getElementById('signupTab').classList.add('active');
     }
 }
@@ -86,10 +124,15 @@ async function signInWithEmail() {
     const email = document.getElementById('signinEmail').value;
     const password = document.getElementById('signinPassword').value;
     
+    if (!email || !password) {
+        showAuthError('Please enter email and password');
+        return;
+    }
+    
     try {
         await auth.signInWithEmailAndPassword(email, password);
         closeAuthModal();
-        showSuccess('Welcome back! 🎉');
+        showNotification('Welcome back! 🎉');
     } catch (error) {
         showAuthError(error.message);
     }
@@ -100,6 +143,11 @@ async function signUpWithEmail() {
     const email = document.getElementById('signupEmail').value;
     const password = document.getElementById('signupPassword').value;
     
+    if (!email || !password) {
+        showAuthError('Please enter email and password');
+        return;
+    }
+    
     if (password.length < 6) {
         showAuthError('Password must be at least 6 characters');
         return;
@@ -108,7 +156,7 @@ async function signUpWithEmail() {
     try {
         await auth.createUserWithEmailAndPassword(email, password);
         closeAuthModal();
-        showSuccess('Account created! Welcome to DSCode! 🎉');
+        showNotification('Account created! Welcome to DSCode! 🎉');
     } catch (error) {
         showAuthError(error.message);
     }
@@ -119,7 +167,7 @@ async function signInWithGoogle() {
     try {
         await auth.signInWithPopup(googleProvider);
         closeAuthModal();
-        showSuccess('Welcome! 🎉');
+        showNotification('Welcome! 🎉');
     } catch (error) {
         showAuthError(error.message);
     }
@@ -129,43 +177,44 @@ async function signInWithGoogle() {
 async function signOut() {
     try {
         await auth.signOut();
-        showSuccess('Signed out successfully');
+        showNotification('Signed out successfully');
     } catch (error) {
         console.error('Sign out error:', error);
     }
 }
 
-// Auth State Observer
-auth.onAuthStateChanged(user => {
+// Auth State Handler
+function handleAuthStateChange(user) {
     const loginBtn = document.getElementById('loginBtn');
     const userMenu = document.getElementById('userMenu');
     
     if (user) {
         // User is signed in
+        console.log('✅ User signed in:', user.email);
+        
         if (loginBtn) loginBtn.style.display = 'none';
         if (userMenu) {
             userMenu.style.display = 'block';
-            document.getElementById('userName').textContent = user.displayName || user.email;
-            document.getElementById('userEmail').textContent = user.email;
-            document.getElementById('userInitials').textContent = getInitials(user.displayName || user.email);
+            
+            const userName = document.getElementById('userName');
+            const userEmail = document.getElementById('userEmail');
+            const userInitials = document.getElementById('userInitials');
+            
+            if (userName) userName.textContent = user.displayName || user.email;
+            if (userEmail) userEmail.textContent = user.email;
+            if (userInitials) userInitials.textContent = getInitials(user.displayName || user.email);
         }
         
-        // Sync progress to Firestore
+        // Sync progress to cloud
         syncProgressToCloud();
     } else {
         // User is signed out
+        console.log('👤 User signed out');
+        
         if (loginBtn) loginBtn.style.display = 'block';
         if (userMenu) userMenu.style.display = 'none';
     }
-});
-
-// Logout Button Handler
-document.getElementById('logoutBtn')?.addEventListener('click', signOut);
-
-// User Menu Toggle
-document.getElementById('userAvatar')?.addEventListener('click', () => {
-    document.getElementById('userDropdown')?.classList.toggle('show');
-});
+}
 
 // Helper Functions
 function getInitials(name) {
@@ -180,16 +229,17 @@ function showAuthError(message) {
     }
 }
 
-function showSuccess(message) {
-    alert(message); // Replace with a nicer toast notification
+function showNotification(message) {
+    // Simple alert for now - can be replaced with a nicer toast
+    alert(message);
 }
 
 // Sync Progress to Cloud
 async function syncProgressToCloud() {
-    if (!auth.currentUser) return;
+    if (!auth || !auth.currentUser || !db) return;
     
     const progress = {
-        completedProblems: [...completedProblems],
+        completedProblems: [...(window.completedProblems || [])],
         lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
     };
     
@@ -198,24 +248,31 @@ async function syncProgressToCloud() {
             progress: progress,
             email: auth.currentUser.email
         }, { merge: true });
+        console.log('✅ Progress synced to cloud');
     } catch (error) {
-        console.error('Sync error:', error);
+        console.error('❌ Sync error:', error);
     }
 }
 
 // Load Progress from Cloud
 async function loadProgressFromCloud() {
-    if (!auth.currentUser) return;
+    if (!auth || !auth.currentUser || !db) return;
     
     try {
         const doc = await db.collection('users').doc(auth.currentUser.uid).get();
         if (doc.exists) {
             const data = doc.data();
-            completedProblems = new Set(data.progress?.completedProblems || []);
-            loadProgress(); // Reload UI
-            updateAllStats();
+            if (data.progress && data.progress.completedProblems) {
+                window.completedProblems = new Set(data.progress.completedProblems);
+                // Reload UI
+                if (typeof loadProgress === 'function') loadProgress();
+                if (typeof updateAllStats === 'function') updateAllStats();
+                console.log('✅ Progress loaded from cloud');
+            }
         }
     } catch (error) {
-        console.error('Load error:', error);
+        console.error('❌ Load error:', error);
     }
 }
+
+console.log('📦 Firebase Auth module loaded');
