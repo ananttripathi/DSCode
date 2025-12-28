@@ -882,7 +882,8 @@ a:focus {
     border-radius: var(--border-radius);
     box-shadow: 0 20px 60px var(--shadow);
     max-height: calc(100vh - 100px);
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
     animation: slideUp 0.3s ease-out;
 }
 
@@ -1414,3 +1415,117 @@ a:focus {
     font-weight: 500;
 }
 
+
+/* ============================================ */
+/* Donate Button & Modal */
+/* ============================================ */
+.donate-btn {
+    margin-top: 20px;
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+}
+
+.donate-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.5);
+}
+
+.donate-modal {
+    max-width: 500px;
+}
+
+.donate-content {
+    text-align: center;
+}
+
+.donate-content > p {
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.upi-section {
+    background: var(--bg-secondary);
+    padding: 25px;
+    border-radius: 12px;
+    margin: 25px 0;
+}
+
+.upi-section h3 {
+    color: var(--text-primary);
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.upi-id-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg-primary);
+    padding: 15px;
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    margin: 15px 0;
+}
+
+.upi-id-box code {
+    flex: 1;
+    font-size: 16px;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.copy-btn {
+    padding: 8px 16px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.copy-btn:hover {
+    background: var(--primary-dark);
+    transform: scale(1.05);
+}
+
+.upi-note {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.thank-you {
+    margin-top: 25px;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
+    border-radius: 8px;
+}
+
+.thank-you p {
+    color: var(--text-primary);
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.made-by {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.made-by strong {
+    color: var(--primary);
+    font-weight: 600;
+}
