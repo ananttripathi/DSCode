@@ -62,10 +62,17 @@ DSCode is a free, comprehensive learning platform for mastering Data Science, AI
 
 ```
 DSCode/
-├── index.html          # Main HTML with all problems
-├── styles.css          # Styling with dark mode
-├── script.js           # Interactive features
-└── README.md          # Documentation
+├── index.html          # Main entry — problem list, filters, progress tracking
+├── topic-detail.html   # Individual topic page
+├── styles.css          # Core styling with dark mode
+├── auth-styles.css     # Authentication UI styles
+├── cta-styles.css      # Call-to-action component styles
+├── script.js           # Core interactivity, filters, localStorage
+├── topic-content.js    # Topic-level problem data and content
+├── firebase-auth.js    # Firebase authentication logic
+├── firebase-config.js  # Firebase project configuration
+├── DEPLOYMENT_GUIDE.md # Detailed deployment instructions
+└── README.md           # Documentation
 ```
 
 ## 💻 Local Development
@@ -148,11 +155,38 @@ Edit `styles.css`:
 2. Import GitHub repository
 3. Deploy with one click
 
+## 🔥 Firebase Setup (Authentication)
+
+DSCode uses **Firebase Authentication** for user login. The project config in `firebase-config.js` points to the live project — no changes needed to run the hosted version.
+
+To self-host with your own Firebase project:
+
+1. Go to [Firebase Console](https://console.firebase.google.com/) → **Create project**
+2. Enable **Authentication** → **Sign-in method** → enable Email/Password (and/or Google)
+3. Copy your project config and replace the values in `firebase-config.js`:
+
+```js
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+```
+
+4. Add your deployment domain to Firebase → **Authentication** → **Authorized domains**
+
+> Note: Firebase client-side API keys are safe to commit — access is controlled by Firebase Security Rules, not by keeping the key secret.
+
+---
+
 ## 🛠️ Technologies
 
-- Pure HTML5, CSS3, JavaScript
-- No frameworks or dependencies
-- LocalStorage for progress tracking
+- Pure HTML5, CSS3, JavaScript (no build step, no npm)
+- **Firebase Authentication** — user login and session management
+- LocalStorage — progress tracking per user
 - Google Fonts (Inter)
 
 ## 📱 Browser Support
